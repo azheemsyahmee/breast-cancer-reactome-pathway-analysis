@@ -2,9 +2,15 @@
 Unit tests for synthetic fidelity evaluation metrics.
 """
 
+import os
+import sys
 import unittest
 import numpy as np
 import pandas as pd
+
+REPO_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
+if REPO_ROOT not in sys.path:
+    sys.path.insert(0, REPO_ROOT)
 
 from src.evaluate import evaluate_synthetic_fidelity, format_evaluation_table
 
@@ -12,7 +18,6 @@ from src.evaluate import evaluate_synthetic_fidelity, format_evaluation_table
 class TestEvaluateModule(unittest.TestCase):
 
     def test_evaluate_synthetic_fidelity_identical(self):
-        # When real and synthetic are identical, cosine similarity is 1.0
         np.random.seed(42)
         real = np.random.randn(100, 20)
         synthetic = real.copy()
@@ -23,7 +28,6 @@ class TestEvaluateModule(unittest.TestCase):
         self.assertAlmostEqual(metrics["real_std"], metrics["synthetic_std"], places=5)
 
     def test_evaluate_synthetic_fidelity_orthogonal(self):
-        # Opposing profiles should yield distinct similarity
         real = np.ones((50, 10))
         synthetic = -1.0 * np.ones((50, 10))
 

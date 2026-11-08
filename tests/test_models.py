@@ -2,7 +2,13 @@
 Unit tests for GAN model architectures and training loop.
 """
 
+import os
+import sys
 import unittest
+
+REPO_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
+if REPO_ROOT not in sys.path:
+    sys.path.insert(0, REPO_ROOT)
 
 try:
     import torch
@@ -41,7 +47,6 @@ class TestModelsModule(unittest.TestCase):
         out = d(x)
 
         self.assertEqual(out.shape, (batch_size, 1))
-        # Sigmoid output must be in (0, 1)
         self.assertTrue(torch.all(out >= 0.0) and torch.all(out <= 1.0))
 
     def test_train_gan_single_epoch(self):
